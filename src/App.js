@@ -1,37 +1,33 @@
 import React, { useState } from 'react';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import ProductCard from './components/ProductCard';
+import Cart from './components/Cart';
+import products from './products';
 import './App.css';
 
-const products = [
-  { id: 1, name: 'T-shirt', price: 500, type: 'tshirt' },
-  { id: 2, name: 'T-shirt', price: 600, type: 'tshirt' },
-  { id: 3, name: 'T-shirt', price: 700, type: 'tshirt' },
-  { id: 4, name: 'Lower', price: 500, type: 'lower' },
-  { id: 5, name: 'Lower', price: 600, type: 'lower' },
-  { id: 6, name: 'Lower', price: 700, type: 'lower' },
-];
+function App() {
+  const [cartItems, setCartItems] = useState([]);
 
-const App = () => {
-  const [filter, setFilter] = useState({ minPrice: 500, maxPrice: 700 });
-
-  const filteredProducts = products.filter(
-    (product) =>
-      product.price >= filter.minPrice && product.price <= filter.maxPrice
-  );
+  const addToCart = (product) => {
+    setCartItems([...cartItems, product]);
+  };
 
   return (
-    <div className="app-container">
-      <h1>Clothing Store</h1>
-      <div className="products">
-        {filteredProducts.map((product) => (
-          <div key={product.id} className="product">
-            <h3>{product.name}</h3>
-            <p>Price: ₹{product.price}</p>
-            <p>Type: {product.type}</p>
-          </div>
-        ))}
-      </div>
+    <div className="App">
+      <Header />
+      <main>
+        <h2>Products</h2>
+        <div className="product-grid">
+          {products.map(product => (
+            <ProductCard key={product.id} product={product} addToCart={addToCart} />
+          ))}
+        </div>
+        <Cart cartItems={cartItems} />
+      </main>
+      <Footer />
     </div>
   );
-};
+}
 
 export default App;
